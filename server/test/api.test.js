@@ -233,7 +233,8 @@ test('admin : gammes, clients, actualités, réglages', async () => {
   await api(`/admin/posts/${post.data.id}`, { method: 'PUT', token: adminToken, body: { ...post.data, published: true } });
   assert.equal((await api(`/posts/${post.data.slug}`)).status, 200);
 
+  const original = (await api('/admin/settings', { token: adminToken })).data;
   const s = await api('/admin/settings', { method: 'PUT', token: adminToken, body: { shipping: { flat_fee: 8000, free_threshold: 200000 }, contact: { phone: '+216 54 438 561', email: 'contact@novalux.com.tn', address: 'Sfax', facebook: '' } } });
   assert.equal(s.data.shipping.flat_fee, 8000);
-  await api('/admin/settings', { method: 'PUT', token: adminToken, body: { shipping: { flat_fee: 7000, free_threshold: 150000 }, contact: s.data.contact } });
+  await api('/admin/settings', { method: 'PUT', token: adminToken, body: original });
 });

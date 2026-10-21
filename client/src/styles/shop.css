@@ -26,6 +26,7 @@
 .header__tools a:hover { color: var(--royal); }
 .count { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; margin-left: 4px; border-radius: 99px; background: var(--royal); color: #fff; font-size: .78rem; }
 .burger { display: none; }
+.menu .menu__account { display: none; }
 
 .menu__row { display: flex; gap: 28px; height: 48px; align-items: center; overflow-x: auto; }
 .menu a { text-decoration: none; font-weight: 500; white-space: nowrap; color: var(--muted); padding: 12px 0; border-bottom: 2px solid transparent; }
@@ -245,6 +246,7 @@
   .burger { display: inline-flex; border: 1.5px solid var(--line); background: #fff; border-radius: var(--r-sm); padding: 6px 12px; font-weight: 600; cursor: pointer; }
   .menu { display: none; border-top: 1px solid var(--line); }
   .menu--open { display: block; }
+  .menu .menu__account { display: block; font-weight: 600; color: var(--royal); }
   .menu__row { flex-direction: column; align-items: stretch; height: auto; gap: 0; padding-bottom: 12px; }
   .menu a { border-bottom: 1px solid var(--line); }
   .menu a.active { border-bottom-color: var(--line); color: var(--royal); }

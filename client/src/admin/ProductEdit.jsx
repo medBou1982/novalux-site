@@ -36,7 +36,7 @@ function Editor({ initial, isNew }) {
   const [errors, setErrors] = useState({});
   const [message, setMessage] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState(() => (initial.variants.length > 40 ? initial.variants[0].option1 || '' : ''));
   const [showGen, setShowGen] = useState(isNew);
   const dirty = useRef(false);
 

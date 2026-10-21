@@ -64,6 +64,9 @@
 .mini-list { list-style: none; margin: 0; padding: 0; }
 .mini-list li { display: flex; gap: 10px; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .93rem; flex-wrap: wrap; }
 .mini-list li:last-child { border-bottom: 0; }
+.mini-list--stock li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 12px; }
+.mini-list--stock li .muted { grid-column: 1; grid-row: 2; font-size: .85rem; }
+.mini-list--stock li b { grid-column: 2; grid-row: 1 / span 2; align-self: center; white-space: nowrap; }
 .text-danger { color: var(--danger); }
 .text-warn { color: var(--warn); }
 .text-ok { color: var(--ok); font-weight: 600; }

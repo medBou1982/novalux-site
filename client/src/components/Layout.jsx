@@ -54,6 +54,7 @@ export default function Layout() {
             <NavLink to="/actualites">Actualités</NavLink>
             <NavLink to="/a-propos">À propos</NavLink>
             <NavLink to="/contact">Contact</NavLink>
+            <NavLink to={account ? '/compte' : '/connexion'} className="menu__account">{account ? 'Mon compte' : 'Se connecter'}</NavLink>
           </div>
         </nav>
       </header>

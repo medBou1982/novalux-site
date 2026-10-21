@@ -67,12 +67,12 @@ export default function Dashboard() {
               <Link to="/admin/produits?statut=actif" className="link">Produits</Link>
             </div>
             {d.low_stock.length === 0 ? <p className="muted">Toutes les variantes ont plus de 5 unités.</p> : (
-              <ul className="mini-list">
+              <ul className="mini-list mini-list--stock">
                 {d.low_stock.map((v) => (
                   <li key={v.id}>
                     <Link to={`/admin/produits/${v.product_id}`} className="link"><Swatch hex={v.color_hex} size={12} /> {v.product_name}</Link>
                     <span className="muted">{[v.option1, v.option2].filter(Boolean).join(' · ')}</span>
-                    <b className={v.stock <= 0 ? 'text-danger' : 'text-warn'}>{v.stock <= 0 ? 'Rupture' : `${v.stock} restants`}</b>
+                    <b className={v.stock <= 0 ? 'text-danger' : 'text-warn'}>{v.stock <= 0 ? 'Rupture' : `${v.stock} restant${v.stock > 1 ? 's' : ''}`}</b>
                   </li>
                 ))}
               </ul>
