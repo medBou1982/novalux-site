@@ -44,6 +44,24 @@ Admin : <http://localhost:5175/admin>, avec `ADMIN_EMAIL` / `ADMIN_PASSWORD` du 
 > Les noms, références et teintes du catalogue de démo viennent du site actuel.
 > **Les prix et stocks sont des valeurs d’exemple** à corriger dans l’admin.
 
+## Dépannage
+
+**« la base de données novalux n'existe pas »** : `npm run db:reset` crée maintenant la base automatiquement. Si l'erreur persiste, vérifiez quel PostgreSQL répond sur le port 5432.
+
+**Un PostgreSQL est déjà installé sur Windows** : il occupe le port 5432 et répond à la place du conteneur Docker. Vérifiez avec :
+
+```bash
+netstat -ano | findstr :5432
+```
+
+Si plusieurs processus écoutent, utilisez le port 5433 pour Docker :
+
+1. Dans `docker-compose.yml`, remplacez `'5432:5432'` par `'5433:5432'`, puis lancez `docker compose up -d` à la racine du projet.
+2. Dans `server/.env`, mettez `DATABASE_URL=postgres://novalux:novalux@localhost:5433/novalux`.
+3. Relancez `npm run db:reset` dans `server/`.
+
+**Vérifier la base du conteneur** : `docker compose exec db psql -U novalux -l` liste les bases présentes.
+
 ## Paiement en ligne Konnect
 
 Sans clé, le paiement en ligne fonctionne en **mode simulé** : le client arrive sur une page de démonstration qui confirme ou refuse le paiement. Pour encaisser réellement :

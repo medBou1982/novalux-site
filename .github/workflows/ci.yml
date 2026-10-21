@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: novalux
           POSTGRES_PASSWORD: novalux
-          POSTGRES_DB: novalux
+          POSTGRES_DB: postgres   # la migration doit créer « novalux » elle-même
         ports: ['5432:5432']
         options: >-
           --health-cmd "pg_isready -U novalux"
