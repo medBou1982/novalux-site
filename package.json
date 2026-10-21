@@ -1,0 +1,14 @@
+{
+  "name": "novalux-site",
+  "private": true,
+  "description": "Boutique en ligne Novalux : React + Node.js/Express + PostgreSQL",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev:api": "npm --prefix server run dev",
+    "dev:web": "npm --prefix client run dev",
+    "db:reset": "npm --prefix server run db:reset",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "test": "npm --prefix server test"
+  }
+}

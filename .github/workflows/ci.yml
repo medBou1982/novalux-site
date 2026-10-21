@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: novalux
+          POSTGRES_PASSWORD: novalux
+          POSTGRES_DB: novalux
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U novalux"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgres://novalux:novalux@localhost:5432/novalux
+      JWT_SECRET: ci-secret
+      ADMIN_EMAIL: admin@novalux.com.tn
+      ADMIN_PASSWORD: ChangeMoi2026!
+      PUBLIC_URL: http://localhost:4000
+      FORM_RATE_LIMIT: '500'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Installer l'API
+        working-directory: server
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Base de données (schéma + démo)
+        working-directory: server
+        run: npm run db:reset
+
+      - name: Compiler le site React
+        working-directory: client
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+          npm run build
+
+      - name: Démarrer l'API (qui sert aussi le site compilé)
+        working-directory: server
+        run: |
+          nohup npm start > ../api.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:4000/api/health && break; sleep 1; done
+
+      - name: Tests de bout en bout de l'API
+        working-directory: server
+        run: npm test
+
+      - name: Le site React est servi
+        run: |
+          curl -sf http://localhost:4000/ | grep -q '<div id="root">'
+          curl -sf http://localhost:4000/produit/peinture-acrylique | grep -q '<div id="root">'
+          curl -sf http://localhost:4000/admin | grep -q '<div id="root">'
+          curl -s -o /dev/null -w '%{http_code}' http://localhost:4000/api/inconnu | grep -q 404
+
+      - name: Journal de l'API
+        if: always()
+        run: cat api.log || true
+
+      - name: Conserver les fichiers de verrouillage npm
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lockfiles
+          path: |
+            server/package-lock.json
+            client/package-lock.json
