@@ -223,7 +223,7 @@ test('admin : gammes, clients, actualités, réglages', async () => {
   assert.equal((await api(`/admin/categories/${acr.id}`, { method: 'DELETE', token: adminToken })).status, 409);
   assert.equal((await api(`/admin/categories/${cat.data.id}`, { method: 'DELETE', token: adminToken })).status, 204);
 
-  const customers = await api('/admin/customers?q=sami', { token: adminToken });
+  const customers = await api('/admin/customers?q=sami%40example.tn', { token: adminToken });
   assert.ok(customers.data.items[0].order_count >= 1);
   const c = await api(`/admin/customers/${customers.data.items[0].id}`, { token: adminToken });
   assert.ok(c.data.orders.length >= 1);
