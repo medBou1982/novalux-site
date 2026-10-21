@@ -12,7 +12,7 @@
     "db:seed": "node scripts/seed.js",
     "db:reset": "node scripts/migrate.js --reset && node scripts/seed.js",
     "admin:create": "node scripts/create-admin.js",
-    "test": "node --test test/"
+    "test": "node --test test/api.test.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
