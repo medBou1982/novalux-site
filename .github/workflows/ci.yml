@@ -53,7 +53,15 @@ jobs:
 
       - name: Tests de bout en bout de l'API
         working-directory: server
-        run: npm test
+        run: |
+          set -o pipefail
+          if ! npm test 2>&1 | tee ../test.log; then
+            # Résumé des échecs en annotation (lisible depuis l'onglet « Summary »)
+            msg=$(grep -E "not ok|Error|expected|actual|operator|at .*test/api" ../test.log | head -60 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
+            echo "::error title=Tests API en échec::${msg}"
+            tail -c 6000 ../api.log | grep -iE "error|exception" | head -20 | awk '{printf "%s%%0A", $0}' | sed 's/^/::warning title=Journal API::/'
+            exit 1
+          fi
 
       - name: Le site React est servi
         run: |
