@@ -84,7 +84,7 @@ jobs:
           cp $GITHUB_WORKSPACE/.github/scripts/screenshots.mjs .
           node screenshots.mjs out
           cd $GITHUB_WORKSPACE
-          cp server/package-lock.json client/package-lock.json /tmp/shots/out/ 2>/dev/null || true
+          cp server/package-lock.json /tmp/shots/out/server-package-lock.json && cp client/package-lock.json /tmp/shots/out/client-package-lock.json
           git config user.name "github-actions" && git config user.email "actions@github.com"
           git checkout --orphan captures && git rm -rqf . && git clean -fdxq -e node_modules
           cp /tmp/shots/out/* . && git add -A
