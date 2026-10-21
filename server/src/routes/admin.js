@@ -439,7 +439,7 @@ router.get('/customers', ah(async (req, res) => {
   let w = '';
   if (req.query.q) {
     params.push(`%${str(req.query.q, 100)}%`);
-    w = `WHERE email ILIKE $1 OR phone ILIKE $1 OR company ILIKE $1 OR (first_name || ' ' || last_name) ILIKE $1`;
+    w = `WHERE c.email ILIKE $1 OR c.phone ILIKE $1 OR c.company ILIKE $1 OR (c.first_name || ' ' || c.last_name) ILIKE $1`;
   }
   const { rows } = await query(
     `SELECT c.id, c.email, c.first_name, c.last_name, c.phone, c.company, c.city, c.created_at,
@@ -451,7 +451,7 @@ router.get('/customers', ah(async (req, res) => {
        ${w} GROUP BY c.id ORDER BY last_order_at DESC NULLS LAST, c.created_at DESC
        LIMIT ${size} OFFSET ${offset}`, params,
   );
-  const { rows: [{ total }] } = await query(`SELECT count(*)::int AS total FROM customers ${w}`, params);
+  const { rows: [{ total }] } = await query(`SELECT count(*)::int AS total FROM customers c ${w}`, params);
   res.json({ items: rows, total, page, size });
 }));
 
