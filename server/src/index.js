@@ -13,7 +13,7 @@ import { pool } from './db.js';
 const app = express();
 app.set('trust proxy', 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.use(cors({ origin: (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',').map((s) => s.trim()) }));
+app.use(cors({ origin: (process.env.CORS_ORIGINS || 'http://localhost:5175').split(',').map((s) => s.trim()) }));
 app.use(express.json({ limit: '1mb' }));
 
 app.get('/api/health', async (_req, res) => {

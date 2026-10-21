@@ -10,7 +10,7 @@ export const isMockMode = () => !process.env.KONNECT_API_KEY;
  * `order` : ligne de la table orders (montant en millimes).
  */
 export async function initPayment(order) {
-  const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:5173').replace(/\/$/, '');
+  const publicUrl = (process.env.PUBLIC_URL || 'http://localhost:5175').replace(/\/$/, '');
   const returnUrl = `${publicUrl}/commande/${order.number}?cle=${order.access_key}`;
 
   if (isMockMode()) {

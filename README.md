@@ -35,10 +35,10 @@ npm run dev                         # http://localhost:4000
 # 3. Site (dans un autre terminal)
 cd client
 npm install
-npm run dev                         # http://localhost:5173
+npm run dev                         # http://localhost:5175
 ```
 
-Admin : <http://localhost:5173/admin>, avec `ADMIN_EMAIL` / `ADMIN_PASSWORD` du fichier `.env`
+Admin : <http://localhost:5175/admin>, avec `ADMIN_EMAIL` / `ADMIN_PASSWORD` du fichier `.env`
 (par défaut `admin@novalux.com.tn` / `ChangeMoi2026!`, **à changer** dans Réglages).
 
 > Les noms, références et teintes du catalogue de démo viennent du site actuel.
