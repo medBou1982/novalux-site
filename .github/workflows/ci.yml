@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -70,15 +73,23 @@ jobs:
           curl -sf http://localhost:4000/admin | grep -q '<div id="root">'
           curl -s -o /dev/null -w '%{http_code}' http://localhost:4000/api/inconnu | grep -q 404
 
+      - name: Captures d'écran (branche « captures »)
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/shots && cd /tmp/shots
+          npm init -y > /dev/null && npm install playwright@1 > /dev/null
+          npx playwright install --with-deps chromium > /dev/null
+          cp $GITHUB_WORKSPACE/.github/scripts/screenshots.mjs .
+          node screenshots.mjs out
+          cd $GITHUB_WORKSPACE
+          cp server/package-lock.json client/package-lock.json /tmp/shots/out/ 2>/dev/null || true
+          git config user.name "github-actions" && git config user.email "actions@github.com"
+          git checkout --orphan captures && git rm -rqf . && git clean -fdxq -e node_modules
+          cp /tmp/shots/out/* . && git add -A
+          git commit -qm "Captures ${GITHUB_SHA::7}" && git push -qf origin captures
+
       - name: Journal de l'API
         if: always()
         run: cat api.log || true
-
-      - name: Conserver les fichiers de verrouillage npm
-        if: always()
-        uses: actions/upload-artifact@v5
-        with:
-          name: lockfiles
-          path: |
-            server/package-lock.json
-            client/package-lock.json
